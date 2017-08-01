@@ -52,6 +52,10 @@
             this.$backdrop.click(function(e)            { self._backdropClickHandler(e); });
         },
 
+
+        /**
+         * Init hideOnSelect plugin setting
+         */
         _initHideOnSelect: function() {
             var self = this;
             this.$element.find('a').click(function(e) { 
@@ -59,6 +63,10 @@
             });
         },
 
+
+        /**
+         * Init toggle plugin setting
+         */
         _initToggle: function() {
             var self = this;
             $(this.settings.toggle).click(function(e) { 
@@ -68,10 +76,20 @@
             });
         },
 
+
+        /**
+         * Backdrop click handler
+         * @param { click Event } e
+         */
         _backdropClickHandler: function(e) {
             this.close();
         },
 
+
+        /**
+         * Touch start handler
+         * @param { touch Event } e
+         */
         _onTouchStart: function(e) {
             e.preventDefault();
             var xPos = e.touches ? e.touches[0].pageX : e.pageX;
@@ -79,6 +97,11 @@
             return false;
         },
 
+
+        /**
+         * Touch end handler
+         * @param { touch Event } e
+         */
         _onTouchEnd: function(e) {
             e.preventDefault();
 
@@ -96,7 +119,12 @@
             return false;
         },
 
-        _onTouchMove: function (e) {
+
+        /**
+         * Touch move handler
+         * @param { touch Event } e
+         */
+        _onTouchMove: function(e) {
             e.preventDefault();
 
             var xPos = e.touches ? e.touches[0].pageX : e.pageX;
@@ -110,15 +138,27 @@
             return false;
         },
 
+
+        /**
+         * Opens sidebar
+         */
         open: function() {
             this.$element.addClass('open');
         },
 
+
+        /**
+         * Closes sidebar
+         */
         close: function() {
             this.$panel.css('left', '');
             this.$element.removeClass('open');
         },
 
+
+        /**
+         * Toggles between open/close state
+         */
         toggle: function() {
             this.$element.toggleClass('open');
         }
