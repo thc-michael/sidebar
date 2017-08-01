@@ -19,7 +19,6 @@ gulp.task('css', function(){
 	.pipe(wait(1500)) // workaround to prevent Visual Studio Code from locking scss files
 	.pipe(sass())
 	.pipe(autoprefixer('last 4 version'))
-	.pipe(rename('app.css'))
 	.pipe(gulp.dest(distDir + '/css'))
 	.pipe(rename({ suffix: '.min' }))
 	.pipe(cleanCSS({ compatibility: 'ie8' }))
@@ -33,7 +32,7 @@ gulp.task('js', function(){
 	return gulp.src([
 		srcDir + '/js/*.js',
 	])
-	.pipe(concat('app.js'))
+	.pipe(concat('sidebar.js'))
 	.pipe(gulp.dest(distDir + '/js'))
 	.pipe(rename({ suffix: '.min' }))
 	.pipe(uglify())

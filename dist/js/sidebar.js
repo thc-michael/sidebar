@@ -1,4 +1,4 @@
-; (function ($, window, document, undefined) {
+;(function($, window, document, undefined) {
 
     var pluginName = 'Sidebar';
     var dataKey = "plugin_" + pluginName;
