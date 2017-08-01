@@ -24,3 +24,5 @@
     height: 100%;
     transition: left 300ms;
     background-color: #333; }
+    .sidebar .panel.no-transition {
+      transition: none; }
