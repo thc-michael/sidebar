@@ -9,12 +9,14 @@
 
         this.settings = {
             hideOnSelect: true,
-            toggleSelector: '',
-            threshold: 20
+            toggle: '',
+            threshold: 20,
+            backdrop: '.backdrop',
+            panel: '.panel',
         };
 
-        this.$backdrop = this.$element.find('.backdrop');
-        this.$panel = this.$element.find('.panel');
+        this.$backdrop;
+        this.$panel;
 
         this.touchStartX = null;
 
@@ -28,13 +30,13 @@
             // init settings
             this.settings = $.extend(true, this.settings, this.$element.data(), options);
 
-            if (this.settings.hideOnSelect) {
-                this._initHideOnSelect();
-            }
+            // elements
+            this.$backdrop = this.$element.find(this.settings.backdrop);
+            this.$panel = this.$element.find(this.settings.panel);
 
-            if (this.settings.toggleSelector.length) {
-                this._initToggleSelector();
-            }
+            // apply settings
+            if (this.settings.hideOnSelect)             { this._initHideOnSelect(); }
+            if (this.settings.toggle.length)            { this._initToggle(); }
 
             // touch events
             this.$panel.bind('touchstart', function(e)  { self._onTouchStart(e); });
@@ -47,7 +49,7 @@
             this.$panel.mousemove(function(e)           { self._onTouchMove(e); });
             this.$panel.mouseleave(function(e)          { self._onTouchEnd(e); });
 
-            this.$backdrop.click(function(e) { self._backdropClickHandler(e); });
+            this.$backdrop.click(function(e)            { self._backdropClickHandler(e); });
         },
 
         _initHideOnSelect: function() {
@@ -57,9 +59,9 @@
             });
         },
 
-        _initToggleSelector: function() {
+        _initToggle: function() {
             var self = this;
-            $(this.settings.toggleSelector).click(function(e) { 
+            $(this.settings.toggle).click(function(e) { 
                 e.preventDefault();
                 self.toggle(); 
                 return false;
