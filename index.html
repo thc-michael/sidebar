@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sidebar</title>
-    <link rel="stylesheet" href="dist/css/app.css">
+    <link rel="stylesheet" href="dist/css/sidebar.css">
     <style>
-        /* aesthetics only */
+        /* decorative only */
         *, *:before, *:after {
             padding: 0;
             margin: 0;
@@ -17,6 +17,12 @@
             font-family: Arial, Helvetica, sans-serif;
             padding: 50px;
             color: #333;
+        }
+        h1 {
+            margin: 20px 0 14px;
+        }
+        p {
+            margin: 0 0 12px;
         }
         #menu-toggle-btn {
             display: block;
@@ -44,9 +50,6 @@
         #menu-toggle-btn span:last-child {
             top: 68%;
         }
-        h1 {
-            margin: 20px 0 6px;
-        }
         .sidebar nav {
             margin-top: 50px;
         }
@@ -56,6 +59,22 @@
             padding-left: 20px;
             color: #fff;
             text-decoration: none;
+        }
+        
+        @media only screen and (min-width: 768px) {
+            main {
+                margin-left: 300px;
+            }
+            #menu-toggle-btn {
+                opacity: 0;
+                pointer-events: none;
+            }
+            .backdrop {
+                display: none;
+            }
+            .sidebar .panel {
+                left: 0;
+            }
         }
     </style>
 </head>
@@ -76,13 +95,23 @@
         <a id="menu-toggle-btn" href="#"><span></span><span></span><span></span></a>
         <h1>Heading</h1>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto deserunt illo officia obcaecati, amet ullam, odio voluptates quia voluptatum ratione velit iste adipisci? Consequatur voluptatum a libero maxime iste, voluptate?</p>
+        <p><strong>Try resizing your browser</strong></p>
     </main>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="dist/js/app.js"></script>
+    <script src="dist/js/sidebar.js"></script>
     <script>
         // plugin init
         $('.sidebar').Sidebar({
-            toggle: '#menu-toggle-btn'
+            toggle: '#menu-toggle-btn',
+            touchEvents: true,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        touchEvents: false
+                    }
+                }
+            ]
         });
     </script>
 </body>
