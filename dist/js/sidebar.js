@@ -14,8 +14,6 @@
         this.baseSettings = {};
         this.settings = {
             touchEvents: true,
-            hideOnSelect: true,
-            toggle: '',
             threshold: 20,
             backdrop: '.backdrop',
             panel: '.panel',
@@ -38,10 +36,6 @@
             // we need to keep a copy of the user's original settings as all settings can be overridden with responsive design
             this.baseSettings = $.extend({}, this.settings, this.$element.data(), options);
             this.refreshSettings();
-
-            // supported events
-            this.$element.find('a').click(function(e)   { self._onLinkSelect(e); });
-            $(this.settings.toggle).click(function(e)   { self._onToggle(e); });
 
             // touch events
             this.$panel.on('touchstart', function(e)    { self._onTouchStart(e); });
@@ -69,16 +63,23 @@
             // reinitialize settings with base settings
             this.settings = $.extend({}, this.baseSettings);
 
+            this._setElements();
+
             // override settings based on breakpoints (mobile first)
             this.settings.responsive.forEach(function(item) {
                 if (window.innerWidth >= item.breakpoint) {
                     self.settings = $.extend({}, self.settings, item.settings);
 
                     // elements
-                    self.$backdrop = self.$element.find(self.settings.backdrop);
-                    self.$panel = self.$element.find(self.settings.panel);
+                    self._setElements();
                 }
             });
+        },
+
+
+        _setElements: function() {
+            this.$backdrop = this.$element.find(this.settings.backdrop);
+            this.$panel = this.$element.find(this.settings.panel);
         },
 
 
@@ -89,25 +90,6 @@
             if (this.settings.responsive.length) {
                 this.refreshSettings();
             }
-        },
-
-
-        /**
-         * On link select
-         */
-        _onLinkSelect: function(e) {
-            e.preventDefault();
-            if (this.settings.hideOnSelect) {
-                this.close();
-            }
-            return false;
-        },
-
-
-        _onToggle: function(e) {
-            e.preventDefault();
-            this.toggle(); 
-            return false;
         },
 
 
@@ -126,10 +108,8 @@
          */
         _onTouchStart: function(e) {
             if (this.settings.touchEvents) {
-                e.preventDefault();
                 var xPos = e.touches ? e.touches[0].pageX : e.pageX;
                 this.touchStartX = xPos;
-                return false;
             }
         },
 
@@ -140,8 +120,6 @@
          */
         _onTouchEnd: function(e) {
             if (this.settings.touchEvents) {
-                e.preventDefault();
-
                 this.$panel.removeClass('no-transition');
 
                 var xPos = e.changedTouches ? e.changedTouches[0].pageX : e.pageX;
@@ -152,8 +130,6 @@
                 }
                 
                 this.touchStartX = null;
-
-                return false;
             }
         },
 
@@ -164,8 +140,6 @@
          */
         _onTouchMove: function(e) {
             if (this.settings.touchEvents) {
-                e.preventDefault();
-
                 var xPos = e.touches ? e.touches[0].pageX : e.pageX;
 
                 if (this.touchStartX) {
@@ -174,7 +148,6 @@
                     this.$panel.css('left', move + 'px');
                 }
 
-                return false;
             }
         },
 

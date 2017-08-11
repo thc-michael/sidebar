@@ -50,10 +50,10 @@
         #menu-toggle-btn span:last-child {
             top: 68%;
         }
-        .sidebar nav {
+        #sidebar nav {
             margin-top: 50px;
         }
-        .sidebar nav a {
+        #sidebar nav a {
             display: block;
             line-height: 30px;
             padding-left: 20px;
@@ -72,14 +72,14 @@
             .backdrop {
                 display: none;
             }
-            .sidebar .panel {
+            #sidebar .panel {
                 left: 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="sidebar">
+    <div id="sidebar">
         <div class="backdrop"></div>
         <div class="panel">
             <nav>
@@ -101,9 +101,8 @@
     <script src="dist/js/sidebar.js"></script>
     <script>
         // plugin init
-        $('.sidebar').Sidebar({
+        var $sidebar = $('#sidebar').Sidebar({
             toggle: '#menu-toggle-btn',
-            touchEvents: true,
             responsive: [
                 {
                     breakpoint: 768,
@@ -112,6 +111,19 @@
                     }
                 }
             ]
+        });
+
+        // typical usage
+        $('#menu-toggle-btn').click(function(e) {
+            e.preventDefault();
+            $sidebar.toggle();
+            return false;
+        });
+
+        $('#sidebar nav a').click(function(e) {
+            e.preventDefault();
+            $sidebar.close();
+            return false;
         });
     </script>
 </body>
