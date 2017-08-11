@@ -13,7 +13,7 @@
 
         this.baseSettings = {};
         this.settings = {
-            touchEvents: false,
+            touchEvents: true,
             hideOnSelect: true,
             toggle: '',
             threshold: 20,
@@ -36,16 +36,12 @@
 
             // init settings
             // we need to keep a copy of the user's original settings as all settings can be overridden with responsive design
-            this.baseSettings = $.extend(true, this.settings, this.$element.data(), options);
+            this.baseSettings = $.extend({}, this.settings, this.$element.data(), options);
             this.refreshSettings();
 
-            // elements
-            this.$backdrop = this.$element.find(this.settings.backdrop);
-            this.$panel = this.$element.find(this.settings.panel);
-
-            // apply settings
-            if (this.settings.hideOnSelect)             { this._initHideOnSelect(); }
-            if (this.settings.toggle.length)            { this._initToggle(); }
+            // supported events
+            this.$element.find('a').click(function(e)   { self._onLinkSelect(e); });
+            $(this.settings.toggle).click(function(e)   { self._onToggle(e); });
 
             // touch events
             this.$panel.on('touchstart', function(e)    { self._onTouchStart(e); });
@@ -58,9 +54,9 @@
             this.$panel.mousemove(function(e)           { self._onTouchMove(e); });
             this.$panel.mouseleave(function(e)          { self._onTouchEnd(e); });
 
-            this.$backdrop.click(function(e)            { self._backdropClickHandler(e); });
+            this.$backdrop.click(function(e)            { self._onBackdropClick(e); });
 
-            $(window).resize(function()                 { self._windowResizeHandler(); });
+            $(window).resize(function()                 { self._onWindowResize(); });
         },
 
 
@@ -71,12 +67,16 @@
             var self = this;
 
             // reinitialize settings with base settings
-            this.settings = $.extend(true, this.baseSettings);
+            this.settings = $.extend({}, this.baseSettings);
 
             // override settings based on breakpoints (mobile first)
             this.settings.responsive.forEach(function(item) {
                 if (window.innerWidth >= item.breakpoint) {
-                    self.settings = $.extend(true, self.settings, item.settings);
+                    self.settings = $.extend({}, self.settings, item.settings);
+
+                    // elements
+                    self.$backdrop = self.$element.find(self.settings.backdrop);
+                    self.$panel = self.$element.find(self.settings.panel);
                 }
             });
         },
@@ -85,7 +85,7 @@
         /**
          * Window resize handler
          */
-        _windowResizeHandler: function () {
+        _onWindowResize: function () {
             if (this.settings.responsive.length) {
                 this.refreshSettings();
             }
@@ -93,26 +93,21 @@
 
 
         /**
-         * Init hideOnSelect plugin setting
+         * On link select
          */
-        _initHideOnSelect: function() {
-            var self = this;
-            this.$element.find('a').click(function(e) { 
-                self.close(); 
-            });
+        _onLinkSelect: function(e) {
+            e.preventDefault();
+            if (this.settings.hideOnSelect) {
+                this.close();
+            }
+            return false;
         },
 
 
-        /**
-         * Init toggle plugin setting
-         */
-        _initToggle: function() {
-            var self = this;
-            $(this.settings.toggle).click(function(e) { 
-                e.preventDefault();
-                self.toggle(); 
-                return false;
-            });
+        _onToggle: function(e) {
+            e.preventDefault();
+            this.toggle(); 
+            return false;
         },
 
 
@@ -120,7 +115,7 @@
          * Backdrop click handler
          * @param { click Event } e
          */
-        _backdropClickHandler: function(e) {
+        _onBackdropClick: function(e) {
             this.close();
         },
 
