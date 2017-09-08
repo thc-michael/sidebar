@@ -101,17 +101,7 @@
     <script src="dist/js/sidebar.js"></script>
     <script>
         // plugin init
-        var $sidebar = $('#sidebar').Sidebar({
-            toggle: '#menu-toggle-btn',
-            responsive: [
-                {
-                    breakpoint: 768,
-                    settings: {
-                        touchEvents: false
-                    }
-                }
-            ]
-        });
+        var $sidebar = $('#sidebar').Sidebar();
 
         // typical usage
         $('#menu-toggle-btn').click(function(e) {
