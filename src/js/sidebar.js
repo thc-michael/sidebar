@@ -1,5 +1,5 @@
 /**
- * Version: 0.1
+ * Version: 1.0
  * Author: Michael D'Souza
  */
 ;(function($, window, document, undefined) {
